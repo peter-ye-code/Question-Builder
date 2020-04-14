@@ -32,10 +32,9 @@ int main(int argc,char*argv[]){
 	}
 	srand((int)time(0));//设置rand()产生随机数时的随机数种子
 	FILE *fp1,*fp2;
-
 	
 	int n,r;
-	if(!strcmp(argv[1],"-n") && !strcmp(argv[3],"-r")){
+	if(!strcmp(argv[1],"-n") && !strcmp(argv[3],"-r")){//生成题目和答案 
 		fp1=fopen("Exercises.txt","w");
 	    fp2=fopen("Answers.txt","w");
 	    fclose(fp1);
@@ -50,7 +49,7 @@ int main(int argc,char*argv[]){
 	        digital_index++;
 		    }
         }   
-	}else if(!strcmp(argv[1],"-e") && !strcmp(argv[3],"-a")){
+	}else if(!strcmp(argv[1],"-e") && !strcmp(argv[3],"-a")){//检查答案 
 	    CheckAnswer(argv[2],argv[4]);
 	}
 	 
@@ -71,7 +70,8 @@ char random_symbol()//随机运算符
     return symbol[rand()%4];
 }
 
-int CreatQuestion (int m,int digital_index,int *answer)  //生成算术表达式的字符数组，m为数值范围，i为题目编号
+ //生成算术表达式
+int CreatQuestion (int m,int digital_index,int *answer) 
 {
 	char str[250] = {'0'};  //定义一个字符数组存放算术表达式
 	int x, num, ran_num, j = 0;  
@@ -82,7 +82,7 @@ int CreatQuestion (int m,int digital_index,int *answer)  //生成算术表达式
 	{
 		ran_num = random_number ( m );  //生成一个参与表达式的数值，m是数值范围 （1~10） 
 		x = 1;
-		while ( ran_num / x ) //当大于0的时候 ,比如rng_num=12,x=1,x=100时退出来 ,比如rng_num=9，x=1时，x=10时退出，表示数值需要生成的个数， 
+		while ( ran_num / x )
 		{
 			x *= 10;
 		}
@@ -123,7 +123,8 @@ int CreatQuestion (int m,int digital_index,int *answer)  //生成算术表达式
 	}
 }
 
-int Answer(char *str,int digital_index)
+//生成答案模块
+int Answer(char *str,int digital_index) 
 {
 	char* p =str;
 	
@@ -231,10 +232,11 @@ int Answer(char *str,int digital_index)
 	return result; 
 }
 
+//写入答案 
 void WriteQuestion(char *str,int digital_index){
 	int k=0;
     FILE *fp;
-   	fp=fopen("Exercises.txt","a");//打开只写文件，若文件存在则文件长度清为0，若文件不存在则建立该文件,这里不能用w,要用a 
+   	fp=fopen("Exercises.txt","a");//若文件不存在则建立该文件,这里不能用w,要用a 
    	fprintf(fp,"%d:",digital_index);
    	while(str[k]!=NULL){
    		if(str[k] == '+' ||str[k] == '-' ||str[k] == '*' ||str[k] == '/' || str[k] == '='){
@@ -246,15 +248,16 @@ void WriteQuestion(char *str,int digital_index){
 	fclose(fp);
 } 
 
+//写入问题 
 void WriteAnswer(int digital_index,int result){
 	FILE *fp;
-   	fp=fopen("Answers.txt","a");//打开只写文件，若文件存在则文件长度清为0，若文件不存在则建立该文件,这里不能用w,要用a 
+   	fp=fopen("Answers.txt","a");//若文件不存在则建立该文件,这里不能用w,要用a 
    	fprintf(fp,"%d:",digital_index);
    	fprintf(fp,"%d\n",result);
    	fclose(fp);
 }
 
-
+//检查答案 
 void CheckAnswer(char exercisefile[],char answerfile[]){
 	FILE *fp1,*fp2,*fp3;
 
